@@ -10,11 +10,12 @@ function getFlowers() {
 }
 
 const postFlower = (flower) => {
-    return fetch(`http://localhost:3001/api/v1/`, {
+    return fetch(`https://bloom-brothers-be-c1f874334094.herokuapp.com/api/v0/plants`, {
       method: 'POST',
       body: JSON.stringify(flower),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'mode': 'no-cors' 
       }
     })
     .then(response => response.json())

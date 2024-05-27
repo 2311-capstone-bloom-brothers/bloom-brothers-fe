@@ -4,11 +4,14 @@ import Flowers from "../Flowers/Flowers";
 import * as flowerConverter from '../../functions/convertFlowerObject';
 import { useEffect, useState, useCallback } from "react";
 import { seedlingsData } from '../../seedlings-dummy';
+import { userFlowers } from '../../userFlowers-dummy';
+import { postFlower } from '../../apiCalls'
 
 export default function Home({ seedlings }) {
     const [myFlowers, setMyFlowers] = useState([]);
     const [mySeedlings, setMySeedlings] = useState();
     const [background, setBackground] = useState('1');
+
 
     function plantFlower(formData) {
         const newFlower = {
@@ -19,7 +22,13 @@ export default function Home({ seedlings }) {
             type: 'flower1'
         };
 
-        setMyFlowers(prev => [...prev, newFlower]);
+        postFlower(newFlower)
+        .then(data => {
+            console.log('data', data)
+            // setMyFlowers(prev => [...prev, data.flower]);
+        })
+
+        
     }
 
     function cleanFlowers(flowers) {
@@ -34,10 +43,15 @@ export default function Home({ seedlings }) {
         setMySeedlings(cleanedSeedlings);
     }, []);
 
+    // useEffect(() => {
+    //     getAllSeedlings();
+    //     setBackground('1');
+    // }, [getAllSeedlings]);
+
     useEffect(() => {
-        getAllSeedlings();
-        setBackground('1');
-    }, [getAllSeedlings]);
+        const cleanedFlowers = cleanFlowers(userFlowers)
+        setMyFlowers([cleanedFlowers[5]]);
+    }, [myFlowers]);
 
     return (
         <StyledHome className={`styled-home ${background}`}>

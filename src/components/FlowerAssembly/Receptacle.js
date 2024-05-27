@@ -1,10 +1,11 @@
 import { Sphere } from "@react-three/drei";
 import Petals from "./Petals";
+import Dahlia from "./Dahlia";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useFrame } from "@react-three/fiber";
 import { CustomShaderMaterial } from '../../functions/CustomShaderMaterial';
 
-const Receptacle = ({ flower, topPoint, bloomAngle }) => {
+const Receptacle = ({ flower, topPoint, bloomAngle, flowerType }) => {
     const [receptRadius, setReceptRadius] = useState();
     const [flowerPetals, setFlowerPetals] = useState();
     const [attachPoint, setAttachPoint] = useState();
@@ -26,31 +27,37 @@ const Receptacle = ({ flower, topPoint, bloomAngle }) => {
 
     const generatePetals = useCallback(() => {
         if (flower) {
-            const petalArray = [];
-            const colorArray = ['blue'];
-            let c = 0;
+            const petalArray = []
+            if(flowerType === "flower1"){
+                const colorArray = ['blue'];
+                let c = 0;
 
-            for (let i = 0; i < flower.petalCount; i += 1) {
-                petalArray.push(
-                    <Petals
-                        key={i}
-                        positionX={0}
-                        positionY={0}
-                        positionZ={0}
-                        rotationX={0}
-                        rotationY={i + 10}
-                        rotationZ={0}
-                        color={colorArray[c]}
-                        flower={flower}
-                    />
-                );
-                c = (c + 1) % colorArray.length;
-            }
-
-            setFlowerPetals(petalArray);
-            setReceptRadius(flower.recRadius);
+                for (let i = 0; i < flower.petalCount; i += 1) {
+                    petalArray.push(
+                        <Petals
+                            key={i}
+                            positionX={0}
+                            positionY={0}
+                            positionZ={0}
+                            rotationX={0}
+                            rotationY={i + 10}
+                            rotationZ={0}
+                            color={colorArray[c]}
+                            flower={flower}
+                            flowerType={flowerType}
+                        />
+                    );
+                    c = (c + 1) % colorArray.length;
+                }
+                setFlowerPetals(petalArray);
+                setReceptRadius(flower.recRadius);
+            } else if(flowerType === "flower2") {
+                const newDahlia = <Dahlia flower={flower} />
+                setFlowerPetals(newDahlia)
         }
-        setScale(1);
+            setScale(1);
+        }
+
     }, [flower]);
     
     useEffect(() => {
