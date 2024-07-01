@@ -1,4 +1,4 @@
-.select-new-seed-button {
+.StandardButton {
     text-decoration: none;
     position: relative;
     border: none;
@@ -16,20 +16,7 @@
     z-index: 1;
 }
 
-.start-button {
-    border-radius: 50% !important;
-    width: 8em;
-    height: 8em;
-    font-size: 20px;
-    line-height: 20px;
-    font-weight: bold;
-    font-family: inherit;
-    color: #f441a5;
-    /* animation: ani 8s ease-in-out infinite;
-    animation-direction: alternate; */
-}
-
-.select-new-seed-button:hover {
+.StandardButton:hover {
     animation: ani 8s linear infinite;
     border: none;
 }
@@ -44,7 +31,7 @@
     }
 }
 
-.select-new-seed-button:before {
+.StandardButton:before {
     content: "";
     position: absolute;
     top: -5px;
@@ -58,17 +45,10 @@
     transition: 1s;
 }
 
-.start-button:before {
-    border-radius: 50%;
-    background: #ffeb3b;
-    /* filter: blur(20px); */
-
-}
-
-.select-new-seed-button:hover::before {
+.StandardButton:hover::before {
     filter: blur(20px);
 }
 
-.select-new-seed-button:active {
+.StandardButton:active {
     background: linear-gradient(32deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
 }

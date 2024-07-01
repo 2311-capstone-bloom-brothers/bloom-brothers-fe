@@ -9,17 +9,15 @@ import { Html } from '@react-three/drei';
 import {deleteFlower} from '../apiCalls'
 import './Flower.css'
 import { SquigglyWiggly } from '../functions/SquigglyWiggly';
+import FlowerMenu from '../components/FlowerMenu';
 
-const Flower1 = ({ flower, stage, pos, deleteThisFlower, canDelete, usePhysics }) => {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-  const flowerPhases = ['seedling', 'blooming', 'thriving', 'wilting', 'dead']
+
+const Flower1 = ({ flower, stage, pos, deleteThisFlower, canDelete, usePhysics, selectFlowerToBreed, breedMode, isDragging, setBreedMode, setFlowerToBreed, setSpotlightPos, breed }) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const springRestLength = 1;
   const springStiffness = 100;
   const springDamping = 10;
 
-  const targetDuration = flower.lifespan / 100000;
-
- 
   const [topPoint, setTopPoint] = useState([0, 0, 0]);
 
   const noise = useMemo(() => new Noise(123456), [])
@@ -37,16 +35,20 @@ const Flower1 = ({ flower, stage, pos, deleteThisFlower, canDelete, usePhysics }
   const [bloomColor, setBloomColor] = useState([0,255,0]) 
   const [flowerId, setFlowerId] = useState()
   const [receptacleRadius, setReceptacleRadius] = useState(0.16)
-
   const recRef = useRef()
   const bloomRef = useRef()
   const [canBeDeleted, setCanBeDeleted] = useState(false)
+  const [ selectedToBreed, setSelectedToBreed ] = useState(false)
+  const [flowerPhases, setFlowerPhases] = useState(['seedling', 'blooming', 'thriving', 'wilting', 'dead'])
+  const [targetDuration, setTargetDuration] = useState(flower.lifespan / 1000)
+  const [displayMenu, setDisplayMenu] = useState(false)
+  const [allowMenu, setAllowMenu] = useState(false)
+
+  console.log("breedMode in flower 1", breedMode)
 
   useEffect(() => {
+    
     if (!stage) {
-      console.log('flower.planted', flower.planted)
-      console.log('Math.floor(Date.now() / 1000)', Math.floor(Date.now() / 1000))
-      console.log('targetDuration', targetDuration)
 
       let foundStage = Math.floor((Math.floor(Date.now() / 1000) - flower.planted) / targetDuration)
       if (foundStage > 3) {
@@ -73,8 +75,8 @@ const Flower1 = ({ flower, stage, pos, deleteThisFlower, canDelete, usePhysics }
     if(flower){
       setFlowerId(flower.id)
     }
-
-  }, [flower, stage, currentStage, flowerPhases, targetDuration])
+      //flower, stage, currentStage, targetDuration, flowerPhases
+  }, [flower, stage, currentStage, targetDuration, flowerPhases])
 
 
   useEffect(() => {
@@ -88,6 +90,7 @@ const Flower1 = ({ flower, stage, pos, deleteThisFlower, canDelete, usePhysics }
     if(currentStageData && currentStage.recRadius){
       setReceptacleRadius(currentStage.recRadius)
     }
+    //currentStageData, currentStage, stage
   }, [currentStageData, currentStage, stage])
 
   useEffect(() => {
@@ -108,6 +111,7 @@ const Flower1 = ({ flower, stage, pos, deleteThisFlower, canDelete, usePhysics }
       bloomRef.current.geometry.attributes.position.needsUpdate = true
       bloomRef.current.geometry.computeVertexNormals()
     }
+    //currentStageData, noise
   }, [currentStageData, noise])
 
   const [flowerObj, flowerObjApi] = useCompoundBody(() => ({
@@ -144,18 +148,18 @@ const Flower1 = ({ flower, stage, pos, deleteThisFlower, canDelete, usePhysics }
 
   useEffect(() => {
     if (pos && currentStageData) {
-      setFlowerPosition([pos[0], pos[1], pos[2]]);
+      // setFlowerPosition([pos[0], pos[1], pos[2]]);
       flowerObjApi.position.set(pos[0], pos[1], pos[2])
       flowerObj.current.positon = [pos[0], pos[1], pos[2]]
     }
-  }, [pos, currentStageData, flowerPosition, flowerObj, flowerObjApi.position]);
+  
+  }, [pos, currentStageData, flowerObj, flowerObjApi.position]);
 
   
 
   useEffect(() =>{
     if(bloomColor){
       let r,g,b
-
       const getRandomColor = () => {
         let min = 0
         let max = 1
@@ -172,18 +176,21 @@ const Flower1 = ({ flower, stage, pos, deleteThisFlower, canDelete, usePhysics }
   }, [bloomColor])
   
 
+const handleClick = () =>{
+    displayMenu ? setDisplayMenu(false) : setDisplayMenu(true)
+  }
+
   return (
-    <group onClick={(e)=> canBeDeleted ? setCanBeDeleted(false) : setCanBeDeleted(true)} ref={flowerObj}>
-     {/* <Billboard position={[0,1,0]}>
-      <Text>
-        {currentStage}
-        </Text>
-     </Billboard> */}
-     {usePhysics && canBeDeleted && <Html>
-        <button className='delete-plant-button' onClick={(e) => deleteThisFlower(flowerId)}>Delete</button>
-      </Html>
-    }
-      <mesh castShadow position={[0,stemHeight,0]} receiveShadow >
+    <group position={pos}>
+     {displayMenu && flower.name &&
+      <FlowerMenu flower={flower} breedMode={breedMode} currentStage={currentStage} setBreedMode={setBreedMode} pos={pos} setFlowerToBreed={setFlowerToBreed} setSpotlightPos={setSpotlightPos} breed={breed} />
+     }
+      <mesh onClick={(e) => {
+            handleClick()
+          }}
+          castShadow
+          position={[0,stemHeight,0]}
+          receiveShadow >
         <sphereGeometry args={[
           receptacleRadius,
           32,
@@ -191,7 +198,13 @@ const Flower1 = ({ flower, stage, pos, deleteThisFlower, canDelete, usePhysics }
         ]} />    
         <meshStandardMaterial color="yellow" />
       </mesh>
-      <mesh ref={bloomRef} castShadow position={[0,stemHeight,0]} receiveShadow >
+      <mesh onClick={(e) => {
+              handleClick()
+            }}
+            ref={bloomRef}
+            castShadow
+            position={[0,stemHeight,0]}
+            receiveShadow >
         <cylinderGeometry args={[
           currentStageData ? currentStageData.radiusTop : 0.2,
           currentStageData ? currentStageData.radiusTop : 0.2,
@@ -208,7 +221,12 @@ const Flower1 = ({ flower, stage, pos, deleteThisFlower, canDelete, usePhysics }
         wireframe={false}
         />
       </mesh>
-      <mesh castShadow position={[0,stemHeight / 2,0]} receiveShadow>
+      <mesh onClick={(e) => {
+            handleClick()
+            }}
+            castShadow
+            position={[0,stemHeight / 2,0]}
+            receiveShadow>
         <cylinderGeometry args={[
           currentStageData ? currentStageData.stemWidth * 0.1 : 0.01,
           currentStageData ? currentStageData.stemWidth * 0.1 : 0.01,

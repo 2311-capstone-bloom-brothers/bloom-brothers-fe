@@ -134,8 +134,7 @@ const DraggableObject = ({ flower, seedType, plantNodes, pos, plantSeed }) => {
         )}
         {seedType === 'flower1' &&
                 <Flower1
-                usePhysics={false}
-                pos={[-10,0,-5]}
+                  isDragging={isDragging}
                   stage={'seedling'}
                   flower={convertFlowerObject(seedlingsData[0].attributes).phases.seedling}
                 />

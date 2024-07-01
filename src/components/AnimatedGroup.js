@@ -1,11 +1,12 @@
 import Text from "./Text";
 import Text2 from "./Text2";
 import TextButton from "./TextButton";
+import BreedButton from "./BreedButton";
 import { useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { lerp } from 'three/src/math/MathUtils';
 
-export default function AnimatedGroup({ goToSeedSelector }) {
+export default function AnimatedGroup({ goToSeedSelector, toggleBreedMode, readyToBreed, breedFlowers }) {
     const textGroupRef = useRef();
     const progress = useRef(0);
   
@@ -38,6 +39,7 @@ export default function AnimatedGroup({ goToSeedSelector }) {
           <Text2 />
         </mesh>
         <TextButton goToSeedSelector={goToSeedSelector} />
+        <BreedButton toggleBreedMode={toggleBreedMode} readyToBreed={readyToBreed} breedFlowers={breedFlowers}/>
       </group>
     );
   };

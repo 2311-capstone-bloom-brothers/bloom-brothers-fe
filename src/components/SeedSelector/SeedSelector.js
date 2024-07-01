@@ -7,8 +7,6 @@ import { Billboard } from "@react-three/drei";
 
 export default function SeedSelector({ seedlings, pickSeed }) {
 
-
-
     // const seedlingComponents = seedlings.map((seedling, index) => {
     //     return (
     //         <Seedling key={seedling.id} seedlingIndex={index} numSeedlings={seedlings.length} seedling={seedling} flower={null} pickSeed={pickSeed} />

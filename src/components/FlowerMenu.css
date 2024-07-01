@@ -1,0 +1,148 @@
+
+
+
+.plant-here-button {
+    border: none;
+    width: 100px;
+    height: 40px;
+    border-radius: 5px;
+}
+
+.plant-here-button:hover {
+    background-color: white;
+    cursor: pointer;
+}
+
+.menu-button-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 250px;
+    width: 200px;
+    border-radius: 20px;
+    justify-content: flex-start;
+    background-color: #d6d5d5;
+}
+
+.menu-text-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 250px;
+    width: 200px;
+    border-radius: 20px;
+    justify-content: flex-start;
+    background-color: #d6d5d5;
+}
+
+.menu-buttons{
+    width: 55px;
+    filter: grayscale(1);
+    &:hover{
+        filter: grayscale(0);
+        cursor: pointer
+    }
+}
+
+.active{
+    width: 55px;
+    filter: grayscale(0);
+}
+
+.menu-p{
+    font-family: 'InterFont', sans-serif;
+    text-align: center;
+    font-size: 10px;
+    margin-bottom: 2px;
+    color: black;
+    background: rgb(231, 231, 231);
+    padding: 5px 20px 5px 20px;
+    border-radius: 10px;
+}
+
+.menu-h3{
+    font-family: 'InterFont', sans-serif;
+    text-align: center;
+    font-size: 10px;
+    margin-bottom: 2px;
+    margin-top: 50px;
+    color: black;
+    background: rgb(231, 231, 231);
+    padding: 5px 30px 5px 30px;
+    border-radius: 10px;
+}
+
+.breed-menu{
+    font-family: 'InterFont', sans-serif;
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 2px;
+    margin-top: 50px;
+    color: black;
+    background: rgb(231, 231, 231);
+    padding: 5px 30px 5px 30px;
+    border-radius: 10px;
+}
+
+.compost-button{
+    background: #2C7911;
+    border-radius: 14px;
+    border: 1px solid #ffffff;
+    color: white;
+    font-family: 'InterFont', sans-serif;
+    padding: 5px;
+    width: 150px;
+    position: relative;
+    top: -100px;
+    left: 25px;
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+.breed-button{
+    background: #C30C85;
+    border-radius: 14px;
+    border: 1px solid #ffffff;
+    color: white;
+    font-family: 'InterFont', sans-serif;
+    padding: 5px;
+    width: 150px;
+    position: relative;
+    top: -100px;
+    left: 25px;
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+.menu-label{
+    font-family: 'InterFont', sans-serif;
+    text-align: center;
+    font-size: 10px;
+    margin-bottom: 25px;
+    color: grey;
+}
+
+.html-container{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    z-index: -1;
+}
+
+.button-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    z-index: 100;
+    position: absolute;
+    left: 0px;
+    top: -30px
+}
+
+.display-group{
+    z-index: 0
+}
